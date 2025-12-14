@@ -86,13 +86,7 @@ object StellarConfig {
 
     }
 
-    private var scope: CoroutineScope = asyncCtx.scope
-        set(value) {
-            field = value
-            if (value != asyncCtx.scope) {
-                asyncCtx.executor.awaitTermination(1, java.util.concurrent.TimeUnit.SECONDS)
-            }
-        }
+    private var _scope by lazy { asyncCtx.scope }
 
     @ApiStatus.Internal
     fun getStellarCommand(name: String): AbstractStellarCommand<*>? =
@@ -109,11 +103,13 @@ object StellarConfig {
 
     @JvmStatic
     fun setScope(scope: CoroutineScope) = apply {
-        this.scope = scope
+        this._scope = scope
     }
 
     @JvmStatic
-    fun getScope() = scope
+    fun getScope(): CoroutineScope {
+        return _scope
+    }
 
     /**
      * Sets the default prefix in [StellarConfig], which will be used a default value.

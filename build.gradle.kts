@@ -51,8 +51,10 @@ val packageSources by tasks.registering(Jar::class) {
     from(subprojects.filter { "kotlin" !in it.path }.map { it.sourceSets.main.get().allSource })
 }
 
-val maven_username = if (env.isPresent("MAVEN_USERNAME")) env.fetch("MAVEN_USERNAME") else ""
-val maven_password = if (env.isPresent("MAVEN_PASSWORD")) env.fetch("MAVEN_PASSWORD") else ""
+val maven_username =
+    if (env.isPresent("MAVEN_USERNAME")) env.fetch("MAVEN_USERNAME") else System.getenv("mavenUser")?.toString() ?: ""
+val maven_password =
+    if (env.isPresent("MAVEN_PASSWORD")) env.fetch("MAVEN_PASSWORD") else System.getenv("mavenPassword")?.toString() ?: ""
 
 publishing {
     publications {

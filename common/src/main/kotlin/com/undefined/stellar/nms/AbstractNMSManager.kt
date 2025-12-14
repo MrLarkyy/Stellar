@@ -59,24 +59,6 @@ abstract class AbstractNMSManager {
             }
         }
 
-        /*
-        for (runnable in baseCommand.runnables.filter { it.async }) if (!runnable(stellarContext)) return@executes 1
-        for (argument in arguments.filter { it != command } + command) for (runnable in argument.runnables.filter { it.async }) if (!runnable(
-                stellarContext
-            )
-        ) return@executes 1
-        for (execution in command.executions.filter { it.async }) execution(stellarContext)
-
-        Bukkit.getScheduler().runTask(plugin, Runnable {
-            for (runnable in baseCommand.runnables.filter { !it.async }) if (!runnable(stellarContext)) return@Runnable
-            for (runnable in command.runnables.filter { !it.async }) if (!runnable(stellarContext)) return@Runnable
-            for (argument in arguments) for (runnable in argument.runnables.filter { !it.async }) if (!runnable(
-                    stellarContext
-                )
-            ) return@Runnable
-            for (execution in command.executions.filter { !it.async }) execution(stellarContext)
-        })
-         */
         return 1
     }
 

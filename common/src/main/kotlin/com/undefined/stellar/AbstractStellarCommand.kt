@@ -111,6 +111,19 @@ abstract class AbstractStellarCommand<T : AbstractStellarCommand<T>>(val name: S
     fun clearAliases(): T = apply { aliases.clear() } as T
 
     /**
+     * Adds a requirement that must be met for the command to be available to the player.
+     *
+     * @param C The type of CommandSender.
+     * @param requirement The condition that must be met.
+     * @return The modified command object.
+     */
+    inline fun <reified C : CommandSender> requires(
+        noinline requirement: C.() -> Boolean,
+    ): AbstractStellarCommand<*> = addRequirement<C> {
+        requirement()
+    }
+
+    /**
      * Adds a requirement that must be met for the command to be available to the player. Only works in Kotlin.
      *
      * @param C The type of CommandSender.
