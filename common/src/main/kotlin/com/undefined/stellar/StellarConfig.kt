@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.plugin.java.JavaPlugin
@@ -86,7 +87,7 @@ object StellarConfig {
 
     }
 
-    private var _scope by lazy { asyncCtx.scope }
+    private var _scope: CoroutineScope? = null
 
     @ApiStatus.Internal
     fun getStellarCommand(name: String): AbstractStellarCommand<*>? =
@@ -103,12 +104,13 @@ object StellarConfig {
 
     @JvmStatic
     fun setScope(scope: CoroutineScope) = apply {
+        _scope?.cancel()
         this._scope = scope
     }
 
     @JvmStatic
     fun getScope(): CoroutineScope {
-        return _scope
+        return _scope ?: asyncCtx.scope
     }
 
     /**
